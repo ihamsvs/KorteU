@@ -93,7 +93,9 @@ export default function Input() {
             </button>
           </div>
         </div>
-
+        {error && (
+          <p>Error </p>
+        )}
         <article>
           {data.length === 0 ? (
             <span></span>
