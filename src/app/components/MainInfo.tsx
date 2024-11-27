@@ -65,6 +65,14 @@ export default function MainInfo(){
                   Explora las diferentes universidades que ofrecen la carrera
                 </p>
               </li>
+              <li className="flex items-start gap-4">
+                <span className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">
+                  4
+                </span>
+                <p className="text-gray-700 pt-1">
+                Si no se especifica una carrera en la búsqueda, la página devolverá, por defecto, todas las carreras disponibles.
+                </p>
+              </li>
             </ol>
           </div>
 
@@ -95,6 +103,12 @@ export default function MainInfo(){
                 <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-amber-500 mt-2" />
                 <p className="text-gray-700">
                   Usa esta información como referencia para orientar tu postulación
+                </p>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-amber-500 mt-2" />
+                <p className="text-gray-700">
+                En el caso de la Universidad Técnica Federico Santa María, se entregarán dos puntajes correspondientes a la sede de Valparaíso y la sede de Santiago. La carrera con el puntaje más bajo corresponde a la sede de Valparaíso.
                 </p>
               </li>
             </ul>

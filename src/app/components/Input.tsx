@@ -3,7 +3,7 @@ import { useState } from "react";
 //import axios from "axios";
 import Lupa from "./icon/Lupa";
 import PopUp from "./PopUp";
-import {supabase} from "@/app/lib/supabaseClient"
+import { supabase } from "@/app/lib/supabaseClient";
 
 interface PostgresData {
   id: number;
@@ -19,31 +19,35 @@ export default function Input() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
-  const limit = 10
+  const limit = 10;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     fetchData(1);
-    setPage(1)
+    setPage(1);
   };
 
   const fetchData = async (currentPage: number) => {
     try {
-      const offset = (currentPage - 1) * limit
+      const offset = (currentPage - 1) * limit;
 
-      const { data: results, error: error ,count } = await supabase
+      const {
+        data: results,
+        error: error,
+        count,
+      } = await supabase
         .from("carreras_data")
-        .select("*", {count: "exact"})
+        .select("*", { count: "exact" })
         .like("carrera", `%${carrera}`)
-        .range(offset, offset + limit - 1)
+        .range(offset, offset + limit - 1);
 
-        if (error) {
-          throw error;
-        }
-    
-        setData(results || []);
-        setTotalPages(Math.ceil((count || 0) / limit));
-        setError(error);
+      if (error) {
+        throw error;
+      }
+
+      setData(results || []);
+      setTotalPages(Math.ceil((count || 0) / limit));
+      setError(error);
     } catch (error) {
       console.error("Error inesperado:", error);
       setError("Ha ocurrido un error inesperado");
@@ -51,12 +55,10 @@ export default function Input() {
     }
   };
 
-  
-
   const handleNextPage = () => {
     if (page < totalPages) {
       setPage(page + 1);
-      fetchData(1);
+      fetchData(page + 1);
     }
   };
 
@@ -70,6 +72,7 @@ export default function Input() {
   // TODO -> Ocupar la funcion lower para que todos los datos se envien en minusculas
   return (
     <div>
+      
       <form onSubmit={handleSubmit} className="py-2">
         <div className="relative mt-6">
           <input
@@ -90,23 +93,24 @@ export default function Input() {
             </button>
           </div>
         </div>
-        
+
         <article>
-          {data.length === 0 ? <span></span>
-          :
-          <div>
-            <h2 className="text-base text-gray-700"> Página: {page} / {totalPages}</h2>
-            <span>Resultados de la busqueda: {carrera}</span>
-          </div>
-          } 
+          {data.length === 0 ? (
+            <span></span>
+          ) : (
+            <div>
+              <h2 className="text-base text-gray-700">
+                {" "}
+                Página: {page} / {totalPages}
+              </h2>
+            </div>
+          )}
         </article>
       </form>
-      {error && (
-        <p>
-          <PopUp />
-        </p>
-      )}
-
+      <div>
+      <PopUp title="Información importante" info="Si no encuentras tu carrera en la lista, asegúrate de escribirla correctamente y el nombre completo, incluyendo tildes. Por ejemplo: Psicología."/>
+      </div>
+  
       <div className="p-8  flex items-center justify-center w-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 group">
           {data.map((carrera) => (
@@ -130,35 +134,37 @@ export default function Input() {
           ))}
         </div>
       </div>
-      {data.length === 0 ? <span></span>
-      :
-      <div className="flex justify-center items-center space-x-4">
-  <div className="inline-block relative">
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-lg blur opacity-75 transition duration-300 group-hover:opacity-100"></div>
-    <button
-      className="relative px-5 py-2.5 bg-white rounded-lg leading-none flex items-center"
-      onClick={handlePrevPage}
-      disabled={page === 1}
-    >
-      <span className="text-gray-800 group-hover:text-gray-900 transition duration-300">
-        Anterior
-      </span>
-    </button>
-  </div>
-  
-  <div className="inline-block relative">
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-lg blur opacity-75 transition duration-300 group-hover:opacity-100"></div>
-    <button
-      className="relative px-5 py-2.5 bg-white rounded-lg leading-none flex items-center"
-      onClick={handleNextPage}
-      disabled={page === totalPages}
-    >
-      <span className="text-gray-800 group-hover:text-gray-900 transition duration-300">
-        Siguiente
-      </span>
-    </button>
-  </div>
-</div>}
+      {data.length === 0 ? (
+        <span></span>
+      ) : (
+        <div className="flex justify-center items-center space-x-4">
+          <div className="inline-block relative mb-5">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-lg blur opacity-75 transition duration-300 group-hover:opacity-100"></div>
+            <button
+              className="relative px-5 py-2.5 bg-white rounded-lg leading-none flex items-center"
+              onClick={handlePrevPage}
+              disabled={page === 1}
+            >
+              <span className="text-gray-800 group-hover:text-gray-900 transition duration-300">
+                Anterior
+              </span>
+            </button>
+          </div>
+
+          <div className="inline-block relative mb-5">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-lg blur opacity-75 transition duration-300 group-hover:opacity-100"></div>
+            <button
+              className="relative px-5 py-2.5 bg-white rounded-lg leading-none flex items-center"
+              onClick={handleNextPage}
+              disabled={page === totalPages}
+            >
+              <span className="text-gray-800 group-hover:text-gray-900 transition duration-300">
+                Siguiente
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
